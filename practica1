@@ -1,56 +1,61 @@
-//FUNCIONES 
+//Funcion que transforma un string en un numero.
+export function ConvertirNumber(s: string): number {
+   try {
+      return parseInt(s);
+   } catch (e) {
+      console.error(e);
+      return -1;
+   }
+}
 
-export function ArrayFlat(arr:number|string[]):number|string[]{
-  return arr.flat(Number.MAX_VALUE);
+//Funcion que me aplana el array. Da igual los tipos que tenga como entrada, lo unico que hace es aplanarlo.
+export function ArrayFlat(a:any[]):any[]{
+   return a.flat(Number.MAX_VALUE);
 }
-export function ConvertirStringNumber(s:string):number{
-  try {
-      return parseInt(s)
-  } catch (e) {
-      console.error(e)
-  }
+//Funcion que transforma los datos del array en numeros.
+export function ConvertirArrNumber(arr:any[]):number[]{
+   const arraydeVuelta:number[]=[];
+   arr.forEach(element => {
+      if(typeof (element)==="string"){
+         arraydeVuelta.push(parseInt(element))
+      }else{
+         arraydeVuelta.push(element)
+      }
+   });
+   return arraydeVuelta
 }
-export function ConvertirArrNumber(arr:number|string[]):number[]{
-  const arrDevuelta=[]
 
-  arr.forEach(element => {
-     if(typeof (element)==="string"){
-      arrDevuelta.push(ConvertirStringNumber(element));
-     } else{
-      arrDevuelta.push(element)
-     }
-  });
-  
-  return arrDevuelta
+export function TransformarArraySinFallas(arr:number[]):number[]{
+   const arraydeVuelta:number[]=[]
+   arr.forEach(element => {
+      const indice=arr.indexOf(element);
+      const dato= arr.splice(indice,1);
+      const dato_array=arr.reduce((p:number,elem:number)=>p*elem)
+      arraydeVuelta.push(dato_array);
+      const numero:number|undefined=dato.at(0)
+      if(typeof(numero)==="number")arr.splice(indice,0,numero)
+   });
+   return arraydeVuelta;
 }
-export function TransformarArray(arr:number[]):number[]{
-  const arrr=[]
-  arr.forEach(element => {
-      let indice=arr.indexOf(element);
-      const myarreglo3=arr.filter((element:[i])=>element!=indice+1)
-      //console.log(myarreglo3);
-      
-     const resultado= myarreglo3.reduce((p:number,c:number)=>p*c);
-      //console.log(resultado)
-      arrr.push(resultado)
-  }
-  
-  )
-  return arrr;
+//Creo que este es el metodo que nos pides hacer en la practica pero he encontrado varias fallas al aplicarlo ya que si hay un dato duplicado en el array no se puede
+//aplicar ninguna de las funciones que hemos visto en clase. Esto es porque nos va a devolver el indice de la primera vez que aparece el dato.
+/*function TransformarArrayFuncionesClase(arr:number[]):number[]{
+   const arraydeVuelta:number[]=[]
+   arr.forEach(element => {
+      const indice=arr.indexOf(element)
+      const nuevoARr=arr.filter((ele:[i])=>ele!=indice+1);
+      const datos=nuevoARr.reduce((pos:number,elem:number)=>pos*elem);
+      arraydeVuelta.push(datos)
+   });
+   return arraydeVuelta;
+}*/
 
-}
-function mostarArrayComoString(arr:number[]):string{
-  
-  return arr.reduce((s:string,element:number)=>{
-      return s+element+","
-  },"[")
 
-  
-}
-//MAIN
-const miarray=[1,"2",[3,"4"]];
-const arrayTrasFlat=ArrayFlat(miarray);
-const PaseoArray=ConvertirArrNumber(arrayTrasFlat)
-const Transformacion=TransformarArray(PaseoArray)
-console.log("El array antes de la transformacion: "+mostarArrayComoString(PaseoArray) +"]")
-console.log("Mostramos el array tras la transformacion pedida en la practica 1: "+mostarArrayComoString(Transformacion)+"]")
+
+const miarray=[1,2,[3,4,["5",2]]]
+
+const resultado=TransformarArraySinFallas(ConvertirArrNumber(ArrayFlat(miarray)))
+
+console.log("El array original es "+miarray)
+console.log("El resultado tras aplicar el ejercicio 1 es "+resultado);
+
