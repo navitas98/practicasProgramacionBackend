@@ -1,0 +1,56 @@
+//FUNCIONES 
+
+export function ArrayFlat(arr:number|string[]):number|string[]{
+  return arr.flat(Number.MAX_VALUE);
+}
+export function ConvertirStringNumber(s:string):number{
+  try {
+      return parseInt(s)
+  } catch (e) {
+      console.error(e)
+  }
+}
+export function ConvertirArrNumber(arr:number|string[]):number[]{
+  const arrDevuelta=[]
+
+  arr.forEach(element => {
+     if(typeof (element)==="string"){
+      arrDevuelta.push(ConvertirStringNumber(element));
+     } else{
+      arrDevuelta.push(element)
+     }
+  });
+  
+  return arrDevuelta
+}
+export function TransformarArray(arr:number[]):number[]{
+  const arrr=[]
+  arr.forEach(element => {
+      let indice=arr.indexOf(element);
+      const myarreglo3=arr.filter((element:[i])=>element!=indice+1)
+      //console.log(myarreglo3);
+      
+     const resultado= myarreglo3.reduce((p:number,c:number)=>p*c);
+      //console.log(resultado)
+      arrr.push(resultado)
+  }
+  
+  )
+  return arrr;
+
+}
+function mostarArrayComoString(arr:number[]):string{
+  
+  return arr.reduce((s:string,element:number)=>{
+      return s+element+","
+  },"[")
+
+  
+}
+//MAIN
+const miarray=[1,"2",[3,"4"]];
+const arrayTrasFlat=ArrayFlat(miarray);
+const PaseoArray=ConvertirArrNumber(arrayTrasFlat)
+const Transformacion=TransformarArray(PaseoArray)
+console.log("El array antes de la transformacion: "+mostarArrayComoString(PaseoArray) +"]")
+console.log("Mostramos el array tras la transformacion pedida en la practica 1: "+mostarArrayComoString(Transformacion)+"]")
